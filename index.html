@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Peace Impact Framework – Vital Signs Drag & Drop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --card-bg: #ffffff;
+      --border-subtle: #e5e7eb;
+      --primary: #2563eb;
+      --primary-soft: #eff6ff;
+      --success: #16a34a;
+      --success-soft: #ecfdf3;
+      --danger: #dc2626;
+      --danger-soft: #fef2f2;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --radius-lg: 14px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 1.5rem;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin: 0 0 0.25rem;
+    }
+
+    .intro {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin: 0 0 1rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .panel {
+      background: #f9fafb;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      padding: 0.75rem;
+      min-height: 200px;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .panel-title span.emoji {
+      font-size: 1.2rem;
+    }
+
+    .panel-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 0.5rem 0.6rem;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      display: flex;
+      gap: 0.5rem;
+      cursor: grab;
+      align-items: flex-start;
+      font-size: 0.9rem;
+    }
+
+    .card.dragging {
+      opacity: 0.75;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+    }
+
+    .card-icon {
+      font-size: 1.1rem;
+      padding-top: 0.1rem;
+    }
+
+    .card-text {
+      flex: 1;
+    }
+
+    .vital-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .vital {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      padding: 0.6rem 0.6rem 0.5rem;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vital-header {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .vital-icon {
+      font-size: 1.3rem;
+    }
+
+    .vital-name {
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .vital-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .vital-dropzone {
+      flex: 1;
+      border-radius: 10px;
+      border: 1px dashed #d1d5db;
+      padding: 0.3rem;
+      min-height: 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .vital-dropzone.over {
+      background: #eff6ff;
+      border-color: var(--primary);
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.9rem;
+      margin-bottom: 0.4rem;
+    }
+
+    button {
+      border: none;
+      padding: 0.5rem 0.9rem;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    button.primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    button.secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .result {
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .card.correct {
+      border-color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .card.incorrect {
+      border-color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Vital Signs of Peace – Drag & Drop Matching</h1>
+    <p class="intro">
+      Drag each statement card into the <strong>Vital Sign of Peace</strong> it best represents.
+      When you're ready, click <strong>Check answers</strong>.
+    </p>
+
+    <div class="layout">
+      <!-- Left: statements -->
+      <section class="panel" aria-label="Statements to sort">
+        <div class="panel-title">
+          <span class="emoji">🧩</span>
+          <span>Statements</span>
+        </div>
+        <p class="panel-subtitle">
+          Drag these cards into the Vital Sign buckets on the right.
+        </p>
+        <div id="start-zone" class="cards-grid" aria-label="Unsorted statements">
+          <!-- Cards will be injected by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Right: vital sign drop zones -->
+      <section class="panel" aria-label="Vital signs of peace">
+        <div class="panel-title">
+          <span class="emoji">❤️</span>
+          <span>Vital Signs of Peace</span>
+        </div>
+        <p class="panel-subtitle">
+          Drop each card into the Vital Sign that fits best.
+        </p>
+        <div class="vital-grid" id="vital-grid">
+          <!-- Vital sign buckets will be injected by JavaScript -->
+        </div>
+      </section>
+    </div>
+
+    <div class="buttons">
+      <button class="primary" id="check-btn">Check answers</button>
+      <button class="secondary" id="reset-btn">Reset</button>
+      <button class="secondary" id="show-btn">Show correct answers</button>
+    </div>
+
+    <div class="result" id="result"></div>
+    <div class="hint">
+      You can change the text, Vital Sign names, and emojis in the code to match your own context or language.
+    </div>
+  </div>
+
+  <script>
+    // --- Data definitions ---
+    const vitalSigns = [
+      {
+        id: "violence",
+        name: "Physical Violence",
+        icon: "🛡️",
+        description: "Direct experiences of violence and perceptions of safety."
+      },
+      {
+        id: "agency",
+        name: "Personal Agency",
+        icon: "💪",
+        description: "People’s sense that they can influence positive change."
+      },
+      {
+        id: "polarization",
+        name: "Polarization / Social Cohesion",
+        icon: "🤝",
+        description: "Relations, trust, and cooperation across dividing lines."
+      },
+      {
+        id: "legitimacy",
+        name: "Institutional Legitimacy",
+        icon: "🏛️",
+        description: "Trust in and accountability of institutions and authorities."
+      },
+      {
+        id: "investment",
+        name: "Resource Investment in Peace",
+        icon: "🌱",
+        description: "How much society invests in peace versus violence."
+      }
+    ];
+
+    const statements = [
+      {
+        id: "s1",
+        text: "People feel safe walking in their neighborhood at night.",
+        icon: "🌙",
+        correctVital: "violence"
+      },
+      {
+        id: "s2",
+        text: "Women and youth feel they can influence local decisions.",
+        icon: "🗳️",
+        correctVital: "agency"
+      },
+      {
+        id: "s3",
+        text: "Different groups regularly cooperate on community projects despite political or religious differences.",
+        icon: "🏗️",
+        correctVital: "polarization"
+      },
+      {
+        id: "s4",
+        text: "People believe local authorities act fairly and respond to community concerns.",
+        icon: "📣",
+        correctVital: "legitimacy"
+      },
+      {
+        id: "s5",
+        text: "More funding goes to mediation, dialogue, and peace education than to weapons or militias.",
+        icon: "💸",
+        correctVital: "investment"
+      },
+      {
+        id: "s6",
+        text: "Rumors and hate speech about other groups spread quickly on social media.",
+        icon: "📱",
+        correctVital: "polarization"
+      },
+      {
+        id: "s7",
+        text: "Survivors of violence can safely report incidents and receive support.",
+        icon: "🆘",
+        correctVital: "legitimacy"
+      },
+      {
+        id: "s8",
+        text: "Young people start their own initiatives to solve local problems without waiting for external funding.",
+        icon: "🚀",
+        correctVital: "agency"
+      },
+      {
+        id: "s9",
+        text: "Household disputes are usually resolved peacefully without escalating to physical fights.",
+        icon: "🏠",
+        correctVital: "violence"
+      },
+      {
+        id: "s10",
+        text: "Residents feel confident speaking up in community meetings without fear of retaliation.",
+        icon: "🗣️",
+        correctVital: "agency"
+      },
+      {
+        id: "s11",
+        text: "People from different backgrounds feel comfortable visiting each other's places of worship or cultural centers.",
+        icon: "🕌",
+        correctVital: "polarization"
+      },
+      {
+        id: "s12",
+        text: "Court decisions are generally respected even when people disagree with the outcome.",
+        icon: "⚖️",
+        correctVital: "legitimacy"
+      },
+      {
+        id: "s13",
+        text: "Local businesses contribute funds to youth peace clubs and dialogue events.",
+        icon: "🏬",
+        correctVital: "investment"
+      }
+    ];
+
+    const startZone = document.getElementById("start-zone");
+    const vitalGrid = document.getElementById("vital-grid");
+    const resultEl = document.getElementById("result");
+
+    let currentDraggedCard = null;
+
+    // --- Build UI ---
+
+    function createCard(statement) {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.draggable = true;
+      card.id = statement.id;
+      card.dataset.statementId = statement.id;
+
+      const iconEl = document.createElement("div");
+      iconEl.className = "card-icon";
+      iconEl.textContent = statement.icon;
+
+      const textEl = document.createElement("div");
+      textEl.className = "card-text";
+      textEl.textContent = statement.text;
+
+      card.appendChild(iconEl);
+      card.appendChild(textEl);
+
+      // Drag events
+      card.addEventListener("dragstart", (e) => {
+        currentDraggedCard = card;
+        card.classList.add("dragging");
+        e.dataTransfer.effectAllowed = "move";
+      });
+
+      card.addEventListener("dragend", () => {
+        currentDraggedCard = null;
+        card.classList.remove("dragging");
+      });
+
+      return card;
+    }
+
+    function createVitalColumn(vital) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "vital";
+      wrapper.dataset.vitalId = vital.id;
+
+      const header = document.createElement("div");
+      header.className = "vital-header";
+
+      const iconEl = document.createElement("div");
+      iconEl.className = "vital-icon";
+      iconEl.textContent = vital.icon;
+
+      const nameEl = document.createElement("div");
+      nameEl.className = "vital-name";
+      nameEl.textContent = vital.name;
+
+      header.appendChild(iconEl);
+      header.appendChild(nameEl);
+
+      const descEl = document.createElement("div");
+      descEl.className = "vital-desc";
+      descEl.textContent = vital.description;
+
+      const dropzone = document.createElement("div");
+      dropzone.className = "vital-dropzone";
+      dropzone.dataset.vitalId = vital.id;
+
+      addDropzoneHandlers(dropzone);
+
+      wrapper.appendChild(header);
+      wrapper.appendChild(descEl);
+      wrapper.appendChild(dropzone);
+
+      return wrapper;
+    }
+
+    function addDropzoneHandlers(zone) {
+      zone.addEventListener("dragover", (e) => {
+        if (!currentDraggedCard) return;
+        e.preventDefault();
+        zone.classList.add("over");
+        e.dataTransfer.dropEffect = "move";
+      });
+
+      zone.addEventListener("dragleave", () => {
+        zone.classList.remove("over");
+      });
+
+      zone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        zone.classList.remove("over");
+        if (!currentDraggedCard) return;
+        zone.appendChild(currentDraggedCard);
+        clearFeedback();
+      });
+    }
+
+    function buildInterface() {
+      // Populate statements
+      startZone.innerHTML = "";
+      statements.forEach((s) => {
+        const card = createCard(s);
+        startZone.appendChild(card);
+      });
+
+      // Make start zone a dropzone too (so cards can be returned)
+      addDropzoneHandlers(startZone);
+
+      // Populate vital buckets
+      vitalGrid.innerHTML = "";
+      vitalSigns.forEach((v) => {
+        const col = createVitalColumn(v);
+        vitalGrid.appendChild(col);
+      });
+    }
+
+    // --- Logic helpers ---
+    function clearFeedback() {
+      resultEl.textContent = "";
+      document.querySelectorAll(".card").forEach((card) => {
+        card.classList.remove("correct", "incorrect");
+      });
+    }
+
+    function checkAnswers() {
+      let correctCount = 0;
+      const total = statements.length;
+
+      clearFeedback();
+
+      statements.forEach((s) => {
+        const card = document.getElementById(s.id);
+        if (!card) return;
+
+        const parentDropzone = card.closest(".vital-dropzone, #start-zone");
+        const parentVitalId = parentDropzone?.dataset?.vitalId || null;
+
+        if (!parentVitalId) {
+          // Still in start zone or no vital assigned
+          card.classList.add("incorrect");
+          return;
+        }
+
+        if (parentVitalId === s.correctVital) {
+          correctCount++;
+          card.classList.add("correct");
+        } else {
+          card.classList.add("incorrect");
+        }
+      });
+
+      resultEl.textContent = `You correctly matched ${correctCount} of ${total} statements.`;
+    }
+
+    function resetGame() {
+      clearFeedback();
+      statements.forEach((s) => {
+        const card = document.getElementById(s.id);
+        if (card) startZone.appendChild(card);
+      });
+    }
+
+    function showAnswers() {
+      clearFeedback();
+
+      statements.forEach((s) => {
+        const card = document.getElementById(s.id);
+        if (!card) return;
+        const correctZone = document.querySelector(
+          `.vital-dropzone[data-vital-id="${s.correctVital}"]`
+        );
+        if (correctZone) {
+          correctZone.appendChild(card);
+          card.classList.add("correct");
+        }
+      });
+
+      resultEl.textContent = "All cards have been sorted into their correct Vital Signs.";
+    }
+
+    // --- Wire up buttons ---
+    document.getElementById("check-btn").addEventListener("click", checkAnswers);
+    document.getElementById("reset-btn").addEventListener("click", resetGame);
+    document.getElementById("show-btn").addEventListener("click", showAnswers);
+
+    // Initialize
+    buildInterface();
+  </script>
+</body>
+</html>
