@@ -29,7 +29,7 @@
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       margin: 0;
-      padding: 1.5rem;
+      padding: 1rem;
       background: var(--bg);
       color: var(--text-main);
     }
@@ -38,39 +38,39 @@
       max-width: 1100px;
       margin: 0 auto;
       background: #ffffff;
-      padding: 1.5rem;
+      padding: 1rem;
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-soft);
     }
 
     h1 {
-      font-size: 1.6rem;
-      margin: 0 0 0.35rem;
+      font-size: 1.5rem;
+      margin: 0 0 0.3rem;
     }
 
     .subtitle {
-      font-size: 0.95rem;
+      font-size: 0.93rem;
       color: var(--text-muted);
-      margin-bottom: 1rem;
+      margin-bottom: 0.9rem;
     }
 
     .intro-box {
       border-radius: 12px;
       border: 1px solid var(--border-subtle);
       background: #f9fafb;
-      padding: 0.9rem 1rem;
-      margin-bottom: 1.2rem;
-      font-size: 0.92rem;
-    }
-
-    .intro-box ul {
-      margin: 0.4rem 0 0.2rem;
-      padding-left: 1.2rem;
+      padding: 0.85rem 0.95rem;
+      margin-bottom: 1rem;
       font-size: 0.9rem;
     }
 
+    .intro-box ul {
+      margin: 0.35rem 0 0.15rem;
+      padding-left: 1.1rem;
+      font-size: 0.88rem;
+    }
+
     .intro-emoji {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       margin-right: 0.35rem;
     }
 
@@ -80,10 +80,10 @@
 
     button {
       border: none;
-      padding: 0.6rem 1.1rem;
+      padding: 0.55rem 1.05rem;
       border-radius: var(--radius-pill);
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     button.primary {
@@ -109,8 +109,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.9rem;
+      gap: 0.7rem;
+      margin-bottom: 0.8rem;
       flex-wrap: wrap;
     }
 
@@ -136,8 +136,8 @@
 
     .board {
       display: grid;
-      grid-template-columns: 2.2fr 5fr;
-      gap: 1rem;
+      grid-template-columns: 2.1fr 4.9fr;
+      gap: 0.8rem;
       align-items: flex-start;
     }
 
@@ -147,40 +147,46 @@
       }
     }
 
-.column-wrapper {
-  border-radius: 12px;
-  border: 1px solid var(--border-subtle);
-  background: #f9fafb;
-  /* slightly tighter padding + smaller base font on the left side */
-  padding: 0.55rem;
-  font-size: 0.85rem;
-}
+    .column-wrapper {
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafb;
+      padding: 0.55rem;
+      font-size: 0.85rem;
+    }
 
-.column-subtitle {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin-bottom: 0.25rem;
-}
-
+    .column-title {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 600;
+      margin-bottom: 0.15rem;
+      font-size: 0.9rem;
     }
 
     .column-title .emoji {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
     }
 
     .column-subtitle {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.25rem;
     }
 
     .drop-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.5rem;
+      gap: 0.45rem;
     }
 
-    @media (max-width: 900px) {
+    @media (min-width: 1150px) {
+      .drop-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
       .drop-grid {
         grid-template-columns: 1fr;
       }
@@ -189,12 +195,12 @@
     .drop-column {
       border-radius: 10px;
       border: 1px dashed #d1d5db;
-      padding: 0.45rem;
-      min-height: 80px;
+      padding: 0.35rem 0.4rem;
+      min-height: 60px;
       background: #fefefe;
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 0.25rem;
       align-items: stretch;
       transition: border-color 0.15s ease, background 0.15s ease;
     }
@@ -207,26 +213,20 @@
     .drop-header {
       display: flex;
       flex-direction: column;
-      gap: 0.05rem;
-      margin-bottom: 0.3rem;
+      gap: 0.02rem;
+      margin-bottom: 0.2rem;
     }
 
     .drop-title {
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 0.3rem;
-    }
-
-    .drop-title span.alt {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: #4b5563;
+      gap: 0.25rem;
     }
 
     .drop-hint {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
     }
 
@@ -234,7 +234,7 @@
       border-radius: 12px;
       border: 1px solid var(--border-subtle);
       background: #f9fafb;
-      padding: 0.75rem;
+      padding: 0.7rem;
     }
 
     .pool-title {
@@ -242,7 +242,8 @@
       align-items: center;
       gap: 0.4rem;
       font-weight: 600;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.15rem;
+      font-size: 0.95rem;
     }
 
     .pool-title .emoji {
@@ -258,7 +259,7 @@
     .card-pool {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.45rem;
+      gap: 0.4rem;
     }
 
     .statement-card {
@@ -302,8 +303,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 0.75rem;
-      margin-top: 0.9rem;
+      gap: 0.7rem;
+      margin-top: 0.8rem;
       flex-wrap: wrap;
     }
 
@@ -311,8 +312,8 @@
       border-radius: 10px;
       border: 1px solid var(--border-subtle);
       background: #f9fafb;
-      padding: 0.6rem 0.75rem;
-      font-size: 0.86rem;
+      padding: 0.55rem 0.7rem;
+      font-size: 0.84rem;
     }
 
     .feedback-title {
@@ -328,7 +329,7 @@
     }
 
     .feedback-text {
-      font-size: 0.86rem;
+      font-size: 0.84rem;
     }
   </style>
 </head>
@@ -343,8 +344,8 @@
       <div class="intro-box">
         <div><span class="intro-emoji">🧩</span><strong>Premise:</strong></div>
         <p>
-          The Peace Impact Framework talks about five vital signs: Physical Violence / Safety, Agency / Powerlessness, Polarization / Social Cohesion,
-          Institutional Legitimacy, and Resource Investment in Peace.
+          The Peace Impact Framework talks about five vital signs: Physical Violence, Agency, Polarization,
+          Institutional Legitimacy, and Resource Investment in Peace/Violence.
           Each has a positive side (e.g. safety, social cohesion) and a negative side (e.g. fear, powerlessness).
         </p>
         <div><span class="intro-emoji">🎯</span><strong>Your task:</strong></div>
@@ -353,11 +354,11 @@
           <li>Notice how each vital sign can show up in both <strong>positive</strong> and <strong>negative</strong> ways.</li>
           <li>Click <strong>Check answers</strong> to see how you did.</li>
         </ul>
-        <p style="margin-top:0.45rem;font-size:0.86rem;color:var(--text-muted);">
+        <p style="margin-top:0.4rem;font-size:0.84rem;color:var(--text-muted);">
           Remember: the same context might show multiple vital signs at once. This game just asks you to pick the
           <em>main</em> one each statement is pointing to.
         </p>
-        <div class="center" style="margin-top:0.7rem;">
+        <div class="center" style="margin-top:0.6rem;">
           <button class="primary" id="start-btn">Start game</button>
         </div>
       </div>
@@ -454,7 +455,7 @@
       {
         id: "resource_investment",
         icon: "🌱",
-        title: "Resource Investment in Peace",
+        title: "Resource Investment in Peace/Violence",
         hint: "Where time and money are actually flowing – towards peace or towards war."
       }
     ];
@@ -513,7 +514,7 @@
         vitalSign: "institutional_legitimacy",
         emoji: "💸"
       },
-      // Resource Investment in Peace
+      // Resource Investment in Peace/Violence
       {
         id: "s9",
         text: "Most public resources are spent on security forces and weapons, with little for peacebuilding.",
@@ -627,6 +628,7 @@
         card.classList.add("neutral");
       });
       feedbackBoxEl.style.display = "none";
+      updateScoreDisplay(false);
     }
 
     let draggedCardId = null;
@@ -715,11 +717,7 @@
 
     // Event listeners
     startBtn.addEventListener("click", initGame);
-    resetBtn.addEventListener("click", () => {
-      buildCards();
-      resetPlacements();
-      updateScoreDisplay(false);
-    });
+    resetBtn.addEventListener("click", resetPlacements);
     checkBtn.addEventListener("click", checkAnswers);
   </script>
 </body>
